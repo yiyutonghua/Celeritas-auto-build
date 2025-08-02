@@ -4,12 +4,13 @@ on:
   workflow_dispatch:
   schedule:
     - cron: "0 0 * * *"
-env:
-  # Setting an environment variable with the value of a configuration variable
-  env_var: ${{ vars.ENV_CONTEXT_VAR }}
+
 jobs:
 
   check:
+
+    outputs:
+      should_run: $
     runs-on: ubuntu-latest
     steps:
       - name: Checkout this repository
@@ -33,12 +34,11 @@ jobs:
         run: echo "PREVIOUS_HASH=$(cat ./latest_commit)" >> $GITHUB_ENV
 
       - name: Check if new commits appear
-        id: should_run
         run: |
           if [[${{ vars.COMMIT_HASH == vars.REVIOUS_HASH }} == 'true']]; then
-            echo "SHOULD_RUN=false" >> $GITHUB_OUTPUT
+            echo "should_run=false" >> $GITHUB_OUTPUT
           else
-            echo "SHOULD_RUN=true" >> $GITHUB_OUTPUT
+            echo "should_run=true" >> $GITHUB_OUTPUT
           fi
 
 
@@ -47,7 +47,7 @@ jobs:
     permissions:
       contents: write
     needs: [check]
-    if: ${{ steps.should_run.outputs.SHOULD_RUN }} == 'true'
+    if: ${{ needs.check.outputs.should_run }} == 'true'
     steps:
       - name: Checkout this repository
         uses: actions/checkout@v4.2.2
