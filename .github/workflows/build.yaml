@@ -99,18 +99,18 @@ jobs:
         run: ./gradlew -Ptarget_versions=1.12.2 packageJar
 
       - name: Update hash storage
-        run: echo $COMMIT_HASH > ./latest_commit
+        run: echo '$COMMIT_HASH' > ./latest_commit
 
       - name: Commit hash update
         uses: EndBug/add-and-commit@v9.1.4
         with:
           add: 'latest_commit'
           push: true
-          tag: $LATEST_DESCRIBE-$CURRENT_DATE
+          tag: '$LATEST_DESCRIBE-$CURRENT_DATE'
 
       - uses: ncipollo/release-action@v1.14.0
         with:
           artifacts: "build/libs/forge122/*"
           generateReleaseNotes: false
           bodyFile: "celeritas/body.txt"
-          tag: $LATEST_DESCRIBE-$CURRENT_DATE
+          tag: '$LATEST_DESCRIBE-$CURRENT_DATE'
