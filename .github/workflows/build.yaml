@@ -112,5 +112,5 @@ jobs:
         with:
           artifacts: "build/libs/forge122/*"
           generateReleaseNotes: false
-          bodyFile: "body.txt"
+          bodyFile: "celeritas/body.txt"
           tag: ${{ vars.LATEST_DESCRIBE }}-${{ vars.CURRENT_DATE }}
