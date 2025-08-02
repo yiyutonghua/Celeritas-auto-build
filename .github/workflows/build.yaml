@@ -33,7 +33,7 @@ jobs:
 
       - name: Check if new commits appear
         run: |
-          if [[${{ vars.COMMIT_HASH == vars.REVIOUS_HASH }} == 'true']]; then
+          if [[${{ vars.COMMIT_HASH == vars.REVIOUS_HASH }}]]; then
             echo "should_run=false" >> $GITHUB_OUTPUT
           else
             echo "should_run=true" >> $GITHUB_OUTPUT
@@ -55,7 +55,7 @@ jobs:
 
       - name: Checkout Celeritas
         run: |
-          git clone --depth 0 https://git.taumc.org/embeddedt/celeritas.git
+          git clone --depth 20 https://git.taumc.org/embeddedt/celeritas.git
 
       - name: Get latest hash
         working-directory: ./celeritas
