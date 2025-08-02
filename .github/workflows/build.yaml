@@ -1,0 +1,59 @@
+name: Auto Releases
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * *"
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout Celeritas
+        run: |
+          sudo apt update
+          sudo apt install git -y
+          git clone https://git.taumc.org/embeddedt/celeritas.git
+
+      - name: Get
+        working-directory: ./celeritas
+        id: get_tag
+        run: echo "::set-output name=tag::$(git describe --tags)"
+
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%dT%H:%M:%S')"
+
+      - name: Get latest hash
+        working-directory: ./celeritas
+        id: hash
+        run: echo "::set-output name=hash::$(git rev-parse HEAD)"
+
+      - name: Set up JDK 8
+        uses: actions/setup-java@v4.7.1
+        with:
+          java-version: '8'
+          distribution: 'temurin'
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4.7.1
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Fix Gradle permission
+        run: chmod +x ./celeritas/gradlew
+
+      - name: Build Jars
+        working-directory: ./celeritas
+        run: ./gradlew -Ptarget_versions=1.12.2 packageJar
+
+      - uses: ncipollo/release-action@v1.14.0
+        with:
+          artifacts: "build/libs/1.12.2/*"
+          generateReleaseNotes: false
+          body: "Built on commit: [link](https://git.taumc.org/embeddedt/celeritas/commit/${{ steps.hash.outputs.hash }})"
+          tag: "${{ steps.get_tag.outputs.tag }}-${{ steps.date.outputs.date }}"
