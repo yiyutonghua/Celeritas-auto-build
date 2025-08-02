@@ -106,11 +106,11 @@ jobs:
         with:
           add: 'latest_commit'
           push: true
-          tag: $LATEST_DESCRIBE-$CURRENT_DATE
+          tag: ${{ env.LATEST_DESCRIBE }}-${{ env.CURRENT_DATE }}
 
       - uses: ncipollo/release-action@v1.14.0
         with:
           artifacts: "forge112/build/libs/*"
           generateReleaseNotes: false
           bodyFile: "celeritas/body.txt"
-          tag: $LATEST_DESCRIBE-$CURRENT_DATE
+          tag: ${{ env.LATEST_DESCRIBE }}-${{ env.CURRENT_DATE }}
