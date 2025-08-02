@@ -21,8 +21,6 @@ jobs:
 
       - name: Checkout Celeritas
         run: |
-          sudo apt update
-          sudo apt install git -y
           git clone https://git.taumc.org/embeddedt/celeritas.git
 
       - name: Get latest hash
@@ -78,7 +76,7 @@ jobs:
 
       - name: Write release body file
         run: |
-          echo "Built on commit: [link](https://git.taumc.org/embeddedt/celeritas/commit/${{ vars.COMMIT_HASH }})' >> body.txt
+          echo 'Built on commit: [link](https://git.taumc.org/embeddedt/celeritas/commit/$COMMIT_HASH)' >> body.txt
           echo >> body.txt
           git rev-list $PREVIOUS_HASH..$COMMIT_HASH --pretty >> body.txt
 
