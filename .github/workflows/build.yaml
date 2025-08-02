@@ -40,6 +40,12 @@ jobs:
     needs: [check]
     if: ${{ vars.SHOULD_RUN }} == 'true'
     steps:
+      - name: Checkout this repository
+        uses: actions/checkout@v4.2.2
+        with:
+          fetch-tags: true
+          fetch-depth: 0
+
       - name: Checkout Celeritas
         run: |
           sudo apt update
