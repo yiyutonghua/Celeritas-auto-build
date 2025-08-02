@@ -33,11 +33,12 @@ jobs:
         run: echo "PREVIOUS_HASH=$(cat ./latest_commit)" >> $GITHUB_ENV
 
       - name: Check if new commits appear
+        id: should_run
         run: |
-          if [[${{ vars.COMMIT_HASH == vars.REVIOUS_HASH }}]]; then
-            echo "SHOULD_RUN=false" >> $GITHUB_ENV
+          if [[${{ vars.COMMIT_HASH == vars.REVIOUS_HASH }} == 'true']]; then
+            echo "SHOULD_RUN=false" >> $GITHUB_OUTPUT
           else
-            echo "SHOULD_RUN=true" >> $GITHUB_ENV
+            echo "SHOULD_RUN=true" >> $GITHUB_OUTPUT
           fi
 
 
@@ -46,7 +47,7 @@ jobs:
     permissions:
       contents: write
     needs: [check]
-    if: ${{ vars.SHOULD_RUN }} == 'true'
+    if: ${{ steps.should_run.outputs.SHOULD_RUN }} == 'true'
     steps:
       - name: Checkout this repository
         uses: actions/checkout@v4.2.2
@@ -59,6 +60,14 @@ jobs:
           sudo apt update
           sudo apt install git -y
           git clone https://git.taumc.org/embeddedt/celeritas.git
+
+      - name: Get latest hash
+        working-directory: ./celeritas
+        run: echo "COMMIT_HASH=$(git rev-parse HEAD)" >> $GITHUB_ENV
+
+
+      - name: Get previous hash
+        run: echo "PREVIOUS_HASH=$(cat ./latest_commit)" >> $GITHUB_ENV
 
       - name: Get latest describe
         working-directory: ./celeritas
