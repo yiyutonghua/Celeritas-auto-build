@@ -55,9 +55,7 @@ jobs:
 
       - name: Checkout Celeritas
         run: |
-          sudo apt update
-          sudo apt install git -y
-          git clone https://git.taumc.org/embeddedt/celeritas.git
+          git clone --depth 0 https://git.taumc.org/embeddedt/celeritas.git
 
       - name: Get latest hash
         working-directory: ./celeritas
