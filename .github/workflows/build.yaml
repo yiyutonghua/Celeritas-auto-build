@@ -101,6 +101,16 @@ jobs:
       - name: Update hash storage
         run: echo $COMMIT_HASH > ./latest_commit
 
-      - name: Check where tf it is
-        run: tree
+      - name: Commit hash update
+        uses: EndBug/add-and-commit@v9.1.4
+        with:
+          add: 'latest_commit'
+          push: true
+          tag: ${{ env.LATEST_DESCRIBE }}-${{ env.CURRENT_DATE }}
 
+      - uses: ncipollo/release-action@v1.14.0
+        with:
+          artifacts: "forge112/build/libs/*"
+          generateReleaseNotes: false
+          bodyFile: "celeritas/body.txt"
+          tag: ${{ env.LATEST_DESCRIBE }}-${{ env.CURRENT_DATE }}
