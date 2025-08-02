@@ -38,7 +38,7 @@ jobs:
     permissions:
       contents: write
     needs: [check]
-    if: $SHOULD_RUN == 'true'
+    if: ${{ vars.SHOULD_RUN }} == 'true'
     steps:
       - name: Get latest describe
         working-directory: ./celeritas
