@@ -78,7 +78,7 @@ jobs:
 
       - name: Get release body
         working-directory: ./celeritas
-        run: echo "RELEASE_BODY=$(git rev-list ${{ vars.PREVIOUS_HASH }}..${{ vars.COMMIT_HASH }} --pretty)" >> $GITHUB_ENV
+        run: echo "RELEASE_BODY=$(git rev-list $PREVIOUS_HASH..$COMMIT_HASH --pretty)" >> $GITHUB_ENV
 
       - name: Set up JDK 8
         uses: actions/setup-java@v4.7.1
@@ -107,17 +107,17 @@ jobs:
         with:
           add: 'latest_commit'
           push: true
-          tag: '${{ vars.LATEST_DESCRIBE }}-${{ vars.CURRENT_DATE }}'
+          tag: ${{ vars.LATEST_DESCRIBE }}-${{ vars.CURRENT_DATE }}
 
       - name: Write release body file
         run: |
-          echo 'Built on commit: [link](https://git.taumc.org/embeddedt/celeritas/commit/${{ vars.COMMIT_HASH }})' >> body.txt
+          echo "Built on commit: [link](https://git.taumc.org/embeddedt/celeritas/commit/${{ vars.COMMIT_HASH }})' >> body.txt
           echo >> body.txt
-          echo '${{ vars.RELEASE_BODY }}' >> body.txt
+          echo '$RELEASE_BODY' >> body.txt
 
       - uses: ncipollo/release-action@v1.14.0
         with:
           artifacts: "build/libs/forge122/*"
           generateReleaseNotes: false
           bodyFile: "body.txt"
-          tag: '${{ vars.LATEST_DESCRIBE }}-${{ vars.CURRENT_DATE }}'
+          tag: ${{ vars.LATEST_DESCRIBE }}-${{ vars.CURRENT_DATE }}
