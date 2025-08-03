@@ -10,7 +10,7 @@ jobs:
   check:
 
     outputs:
-      should_run: $
+      should_run: ${{ steps.checker.outputs.should_run }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout this repository
@@ -32,6 +32,7 @@ jobs:
         run: echo "PREVIOUS_HASH=$(cat ./latest_commit)" >> $GITHUB_ENV
 
       - name: Check if new commits appear
+        id: checker
         run: |
           if [[ "${{ env.COMMIT_HASH }}" == "${{ env.PREVIOUS_HASH }}" ]]
           then
