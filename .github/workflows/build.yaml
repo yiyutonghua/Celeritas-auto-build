@@ -33,7 +33,7 @@ jobs:
 
       - name: Check if new commits appear
         run: |
-          if ["${{ env.COMMIT_HASH }}" == "${{ env.PREVIOUS_HASH }}"]
+          if [[ "${{ env.COMMIT_HASH }}" == "${{ env.PREVIOUS_HASH }}" ]]
           then
             echo "should_run=false" >> $GITHUB_OUTPUT
           else
