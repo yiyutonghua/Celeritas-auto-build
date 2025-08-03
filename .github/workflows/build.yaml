@@ -49,6 +49,9 @@ jobs:
     needs: [check]
     if: ${{ needs.check.outputs.should_run }}
     steps:
+      - name: Debug
+        run: echo "${{ needs.check.outputs.should_run }}"
+
       - name: Checkout this repository
         uses: actions/checkout@v4.2.2
         with:
