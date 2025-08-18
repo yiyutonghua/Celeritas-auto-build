@@ -107,7 +107,7 @@ jobs:
 
       - name: Build Jars
         working-directory: ./celeritas
-        run: ./gradlew build -Ptarget_versions=1.16.5 -Ptarget_subprojects=modern packageJar
+        run: ./gradlew build -Ptarget_versions=1.12.2 -Ptarget_subprojects=forge122 packageJar
 
       - name: Update hash storage
         run: echo $COMMIT_HASH > ./latest_commit
@@ -121,7 +121,7 @@ jobs:
 
       - uses: ncipollo/release-action@v1.14.0
         with:
-          artifacts: "celeritas/modern/versions/1.19.2/build/libs/*"
+          artifacts: "celeritas/forge122/versions/1.12.2/build/libs/*"
           generateReleaseNotes: false
           bodyFile: "celeritas/body.txt"
           tag: ${{ env.LATEST_DESCRIBE }}-${{ env.CURRENT_DATE }}
