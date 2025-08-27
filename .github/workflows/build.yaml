@@ -115,7 +115,7 @@ jobs:
 
       - uses: ncipollo/release-action@v1.14.0
         with:
-          artifacts: 'celeritas/forge122/versions/1.12.2/build/libs/!*-dev-dev.jar'
+          artifacts: 'celeritas/forge122/versions/1.12.2/build/libs/*.jar'
           generateReleaseNotes: false
           bodyFile: "celeritas/body.txt"
           tag: ${{ env.LATEST_DESCRIBE }}-${{ env.CURRENT_DATE }}
