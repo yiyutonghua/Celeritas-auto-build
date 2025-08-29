@@ -103,6 +103,12 @@ jobs:
         working-directory: ./celeritas
         run: ./gradlew -Ptarget_versions=1.12.2 packageJar
 
+      - name: Remove dev jars
+        working-directory: ./celeritas/forge122/versions/1.12.2/build/libs
+        run: |
+          rm *-dev-dev.jar
+          rm *-dev-remapped-thin.jar
+
       - name: Update hash storage
         run: echo $COMMIT_HASH > ./latest_commit
 
